@@ -20,6 +20,7 @@ jobs:
           script: |
             cd ~/aws
             git pull
-            sudo docker compose down
-            sudo fuser -k 5000/tcp || true
+            sudo docker compose down --remove-orphans
+            sudo docker rm -f $(sudo docker ps -aq) 2>/dev/null || true
+            sudo docker network prune -f
             sudo docker compose up -d --build
